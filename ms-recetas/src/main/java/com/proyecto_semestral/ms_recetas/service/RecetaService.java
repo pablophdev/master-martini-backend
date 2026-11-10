@@ -7,6 +7,9 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
@@ -35,6 +38,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class RecetaService {
 
+    private static final int TAMANO_PAGINA = 12;
+
     private final RecetaRepository recetaRepository;
     private final CategoriaRecetaRepository categoriaRepository;
     private final IngredienteRecetaRepository ingredienteRepository;
@@ -53,8 +58,42 @@ public class RecetaService {
     }
 
     @Transactional(readOnly = true)
+    public Page<RecetaResumenResponse> listar(String busqueda, Long categoriaId, int pagina) {
+        if (pagina < 0) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "La página no puede ser negativa");
+        }
+
+        List<RecetaResumenResponse> recetas = listar(busqueda, categoriaId);
+        int desde = Math.min(pagina * TAMANO_PAGINA, recetas.size());
+        int hasta = Math.min(desde + TAMANO_PAGINA, recetas.size());
+
+        return new PageImpl<>(
+                recetas.subList(desde, hasta),
+                PageRequest.of(pagina, TAMANO_PAGINA),
+                recetas.size());
+    }
+
+    @Transactional(readOnly = true)
+    public List<RecetaResumenResponse> listarTodas() {
+        Map<Long, CategoriaReceta> categorias = categoriaRepository.findAll().stream()
+                .collect(Collectors.toMap(CategoriaReceta::getId, Function.identity()));
+
+        return recetaRepository.findAll().stream()
+                .map(receta -> toResumen(receta, categorias.get(receta.getCategoriaId())))
+                .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
     public RecetaDetalleResponse obtener(Long id) {
         return toDetalle(buscarReceta(id));
+    }
+
+    @Transactional(readOnly = true)
+    public RecetaDetalleResponse obtenerPublicada(Long id) {
+        Receta receta = recetaRepository.findByIdAndPublicadaTrue(id)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "Receta publicada no encontrada con id " + id));
+        return toDetalle(receta);
     }
 
     @Transactional(readOnly = true)
@@ -150,6 +189,13 @@ public class RecetaService {
         ingredienteRepository.deleteByRecetaId(id);
         pasoRepository.deleteByRecetaId(id);
         recetaRepository.delete(receta);
+    }
+
+    @Transactional
+    public RecetaDetalleResponse actualizarImagen(Long id, String imagenUrl) {
+        Receta receta = buscarReceta(id);
+        receta.setImagenUrl(imagenUrl);
+        return toDetalle(recetaRepository.save(receta));
     }
 
     private List<Receta> buscarRecetas(String busqueda, Long categoriaId) {
