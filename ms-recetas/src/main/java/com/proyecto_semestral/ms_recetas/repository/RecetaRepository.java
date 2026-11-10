@@ -15,4 +15,6 @@ public interface RecetaRepository extends JpaRepository<Receta, Long> {
     List<Receta> findByCategoriaIdAndPublicadaTrue(Long categoriaId);
 
     List<Receta> findByTituloContainingIgnoreCaseAndPublicadaTrue(String titulo);
+
+    List<Receta> findByTituloContainingIgnoreCaseAndCategoriaIdAndPublicadaTrue(String titulo, Long categoriaId);
 }
