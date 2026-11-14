@@ -4,7 +4,6 @@ import java.net.URI;
 
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -48,14 +47,12 @@ public class CursoController {
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<CursoDetalleResponse> crear(@Valid @RequestBody CrearCursoRequest request) {
         CursoDetalleResponse curso = cursoService.crear(request);
         return ResponseEntity.created(URI.create("/api/cursos/" + curso.id())).body(curso);
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
     public CursoDetalleResponse actualizar(
             @PathVariable Long id,
             @Valid @RequestBody ActualizarCursoRequest request) {
@@ -63,7 +60,6 @@ public class CursoController {
     }
 
     @PatchMapping("/{id}/publicacion")
-    @PreAuthorize("hasRole('ADMIN')")
     public CursoDetalleResponse cambiarPublicacion(
             @PathVariable Long id,
             @Valid @RequestBody CambiarPublicacionRequest request) {
@@ -71,7 +67,6 @@ public class CursoController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> eliminar(@PathVariable Long id) {
         cursoService.eliminar(id);
         return ResponseEntity.noContent().build();

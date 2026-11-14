@@ -4,7 +4,6 @@ import java.net.URI;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,7 +33,6 @@ public class CategoriaCursoController {
     }
 
     @PostMapping
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<CategoriaCursoResponse> crear(
             @Valid @RequestBody GuardarCategoriaRequest request) {
         CategoriaCursoResponse categoria = categoriaService.crear(request);
@@ -44,7 +42,6 @@ public class CategoriaCursoController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
     public CategoriaCursoResponse actualizar(
             @PathVariable Long id,
             @Valid @RequestBody GuardarCategoriaRequest request) {
@@ -52,7 +49,6 @@ public class CategoriaCursoController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> eliminar(@PathVariable Long id) {
         categoriaService.eliminar(id);
         return ResponseEntity.noContent().build();
