@@ -11,6 +11,8 @@ import com.proyecto_semestral.ms_cursos.entity.Curso;
 @Repository
 public interface CursoRepository extends JpaRepository<Curso, Long> {
 
+    boolean existsByCategoriaId(Long categoriaId);
+
     Optional<Curso> findByIdAndPublicadoTrue(Long id);
 
     List<Curso> findByPublicadoTrue();
