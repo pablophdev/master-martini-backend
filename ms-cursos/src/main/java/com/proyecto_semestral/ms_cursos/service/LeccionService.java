@@ -93,11 +93,11 @@ public class LeccionService {
     }
 
     private void validarDuracionYOrden(Integer duracionSegundos, Integer orden) {
-        if (orden == null || orden < 0) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El orden no puede ser negativo");
+        if (orden == null || orden <= 0) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "El orden debe ser mayor que cero");
         }
-        if (duracionSegundos != null && duracionSegundos < 0) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "La duración no puede ser negativa");
+        if (duracionSegundos == null || duracionSegundos <= 0) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "La duración debe ser mayor que cero");
         }
     }
 

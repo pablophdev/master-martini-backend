@@ -2,7 +2,7 @@ package com.proyecto_semestral.ms_cursos.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 import lombok.Builder;
 
@@ -13,6 +13,6 @@ public record GuardarObjetivoRequest(
         String descripcion,
 
         @NotNull(message = "El orden del objetivo es obligatorio")
-        @PositiveOrZero(message = "El orden del objetivo no puede ser negativo")
+        @Positive(message = "El orden del objetivo debe ser mayor que cero")
         Integer orden) {
 }

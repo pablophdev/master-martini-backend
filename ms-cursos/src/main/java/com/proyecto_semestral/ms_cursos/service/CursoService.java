@@ -7,6 +7,9 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
@@ -95,8 +98,41 @@ public class CursoService {
     }
 
     @Transactional(readOnly = true)
+    public Page<CursoResumenResponse> listarPublicados(
+            String busqueda,
+            Long categoriaId,
+            int pagina,
+            int tamano) {
+        if (pagina < 0) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "La página no puede ser negativa");
+        }
+        if (tamano < 1 || tamano > 100) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST, "El tamaño de página debe estar entre 1 y 100");
+        }
+
+        List<CursoResumenResponse> cursos = listarPublicados(busqueda, categoriaId);
+        long desplazamiento = (long) pagina * tamano;
+        int desde = (int) Math.min(desplazamiento, cursos.size());
+        int hasta = Math.min(desde + tamano, cursos.size());
+
+        return new PageImpl<>(
+                cursos.subList(desde, hasta),
+                PageRequest.of(pagina, tamano),
+                cursos.size());
+    }
+
+    @Transactional(readOnly = true)
     public CursoDetalleResponse obtenerDetalle(Long id) {
         return construirDetalle(buscarCurso(id));
+    }
+
+    @Transactional(readOnly = true)
+    public CursoDetalleResponse obtenerDetallePublicado(Long id) {
+        Curso curso = cursoRepository.findByIdAndPublicadoTrue(id)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "Curso publicado no encontrado con id " + id));
+        return construirDetalle(curso);
     }
 
     @Transactional
@@ -153,9 +189,9 @@ public class CursoService {
 
         List<ObjetivoAprendizaje> entidades = new ArrayList<>();
         for (GuardarObjetivoRequest objetivo : objetivos) {
-            if (objetivo.orden() == null || objetivo.orden() < 0) {
+            if (objetivo.orden() == null || objetivo.orden() <= 0) {
                 throw new ResponseStatusException(
-                        HttpStatus.BAD_REQUEST, "El orden de los objetivos no puede ser negativo");
+                        HttpStatus.BAD_REQUEST, "El orden de los objetivos debe ser mayor que cero");
             }
 
             entidades.add(ObjetivoAprendizaje.builder()

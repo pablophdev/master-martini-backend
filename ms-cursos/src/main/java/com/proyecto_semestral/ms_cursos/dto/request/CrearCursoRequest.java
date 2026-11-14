@@ -12,9 +12,10 @@ import lombok.Builder;
 @Builder
 public record CrearCursoRequest(
         @NotBlank(message = "El título del curso es obligatorio")
-        @Size(max = 150, message = "El título del curso no puede superar los 150 caracteres")
+        @Size(max = 200, message = "El título del curso no puede superar los 200 caracteres")
         String titulo,
 
+        @NotBlank(message = "La descripción del curso es obligatoria")
         @Size(max = 2000, message = "La descripción no puede superar los 2000 caracteres")
         String descripcion,
 
@@ -22,7 +23,7 @@ public record CrearCursoRequest(
         @Positive(message = "El id de la categoría debe ser mayor que 0")
         Long categoriaId,
 
-        @Size(max = 500, message = "La URL de la imagen no puede superar los 500 caracteres")
+        @Size(max = 2048, message = "La URL de la imagen no puede superar los 2048 caracteres")
         String imagenUrl,
 
         @Valid
