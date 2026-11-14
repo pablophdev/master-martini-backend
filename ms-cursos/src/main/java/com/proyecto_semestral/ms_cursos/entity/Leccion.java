@@ -28,18 +28,18 @@ public class Leccion {
     @Column(name = "curso_id", nullable = false)
     private Long cursoId;
 
-    @Column(nullable = false, length = 150)
+    @Column(nullable = false, length = 200)
     private String titulo;
 
-    @Column(length = 2000)
+    @Column(columnDefinition = "TEXT")
     private String descripcion;
 
     @Column(nullable = false)
     private Integer orden;
 
-    @Column(name = "video_url", length = 500)
+    @Column(name = "video_url", nullable = false, length = 2048)
     private String videoUrl;
 
-    @Column(name = "duracion_segundos")
+    @Column(name = "duracion_segundos", nullable = false)
     private Integer duracionSegundos;
 }

@@ -1,0 +1,13 @@
+databaseChangeLog:
+  - include:
+      file: 001-tabla-categorias.sql
+      relativeToChangelogFile: true
+  - include:
+      file: 002-tabla-cursos.sql
+      relativeToChangelogFile: true
+  - include:
+      file: 003-tabla-objetivos.sql
+      relativeToChangelogFile: true
+  - include:
+      file: 004-tabla-lecciones.sql
+      relativeToChangelogFile: true

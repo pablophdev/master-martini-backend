@@ -30,16 +30,16 @@ public class Curso {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 150)
+    @Column(nullable = false, length = 200)
     private String titulo;
 
-    @Column(length = 2000)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String descripcion;
 
     @Column(name = "categoria_id", nullable = false)
     private Long categoriaId;
 
-    @Column(name = "imagen_url", length = 500)
+    @Column(name = "imagen_url", length = 2048)
     private String imagenUrl;
 
     @Column(nullable = false)
@@ -51,6 +51,6 @@ public class Curso {
     private LocalDateTime creadoEn;
 
     @UpdateTimestamp
-    @Column(name = "actualizado_en")
+    @Column(name = "actualizado_en", nullable = false)
     private LocalDateTime actualizadoEn;
 }
