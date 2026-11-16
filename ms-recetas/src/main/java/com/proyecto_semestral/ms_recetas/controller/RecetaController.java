@@ -93,16 +93,9 @@ public class RecetaController {
     public ResponseEntity<RecetaDetalleResponse> subirImagen(
             @PathVariable Long id,
             @RequestParam("image") MultipartFile imagen) {
-        RecetaDetalleResponse actual = recetaService.obtener(id);
-        String nuevaUrl = imagenService.guardar(imagen);
-
-        try {
-            RecetaDetalleResponse actualizada = recetaService.actualizarImagen(id, nuevaUrl);
-            imagenService.eliminar(actual.imagenUrl());
-            return ResponseEntity.status(HttpStatus.OK).body(actualizada);
-        } catch (RuntimeException exception) {
-            imagenService.eliminar(nuevaUrl);
-            throw exception;
-        }
+        recetaService.obtener(id);
+        String nuevaUrl = imagenService.guardar(id, imagen);
+        RecetaDetalleResponse actualizada = recetaService.actualizarImagen(id, nuevaUrl);
+        return ResponseEntity.status(HttpStatus.OK).body(actualizada);
     }
 }

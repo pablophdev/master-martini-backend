@@ -70,16 +70,10 @@ public class CursoController {
     public ResponseEntity<CursoDetalleResponse> subirImagen(
             @PathVariable Long id,
             @RequestParam("image") MultipartFile imagen) {
-        CursoDetalleResponse actual = cursoService.obtenerDetalle(id);
-        String nuevaUrl = imagenService.guardar(imagen);
-        try {
-            CursoDetalleResponse actualizado = cursoService.actualizarImagen(id, nuevaUrl);
-            imagenService.eliminar(actual.imagenUrl());
-            return ResponseEntity.status(HttpStatus.OK).body(actualizado);
-        } catch (RuntimeException exception) {
-            imagenService.eliminar(nuevaUrl);
-            throw exception;
-        }
+        cursoService.obtenerDetalle(id);
+        String nuevaUrl = imagenService.guardar(id, imagen);
+        CursoDetalleResponse actualizado = cursoService.actualizarImagen(id, nuevaUrl);
+        return ResponseEntity.status(HttpStatus.OK).body(actualizado);
     }
 
     @PatchMapping("/{id}/publicacion")
