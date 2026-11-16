@@ -1,4 +1,4 @@
 databaseChangeLog:
   - include:
-      file: changes/001-crear-consultas-contacto.sql
+      file: 001-crear-consultas-contacto.sql
       relativeToChangelogFile: true
