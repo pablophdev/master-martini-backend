@@ -1,0 +1,58 @@
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      server:
+        webflux:
+          routes:
+            - id: ms-recetas
+              uri: ${MS_RECETAS_URL:http://localhost:8080}
+              predicates:
+                - Path=/api/v1/recipes/**,/api/v1/admin/recipes/**,/imagenes/recetas/**
+
+            - id: ms-cursos
+              uri: ${MS_CURSOS_URL:http://localhost:8081}
+              predicates:
+                - Path=/api/cursos/**,/api/categorias/**
+
+            - id: ms-contacto
+              uri: ${MS_CONTACTO_URL:http://localhost:8082}
+              predicates:
+                - Path=/api/contacto/**,/api/consultas/**
+
+          globalcors:
+            add-to-simple-url-handler-mapping: true
+            cors-configurations:
+              '[/**]':
+                allowed-origin-patterns:
+                  - ${CORS_ALLOWED_ORIGIN_PATTERN:http://localhost:*}
+                  - ${CORS_ALLOWED_HTTPS_ORIGIN_PATTERN:https://localhost:*}
+                allowed-methods:
+                  - GET
+                  - POST
+                  - PUT
+                  - PATCH
+                  - DELETE
+                  - OPTIONS
+                allowed-headers:
+                  - '*'
+                exposed-headers:
+                  - Location
+                allow-credentials: true
+                max-age: 3600
+
+server:
+  port: ${SERVER_PORT:8083}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - health
+          - info
+          - gateway
+  endpoint:
+    gateway:
+      access: read-only
