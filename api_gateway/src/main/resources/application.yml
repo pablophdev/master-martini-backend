@@ -14,7 +14,7 @@ spring:
             - id: ms-cursos
               uri: ${MS_CURSOS_URL:http://localhost:8091}
               predicates:
-                - Path=/api/cursos/**,/api/categorias/**,/api/v1/admin/cursos/**
+                - Path=/api/cursos/**,/api/categorias/**,/api/v1/admin/cursos/**,/imagenes/cursos/**
 
             - id: ms-contacto
               uri: ${MS_CONTACTO_URL:http://localhost:8092}

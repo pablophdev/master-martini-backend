@@ -68,7 +68,9 @@ public class CursoService {
         curso.setTitulo(request.titulo());
         curso.setDescripcion(request.descripcion());
         curso.setCategoriaId(request.categoriaId());
-        curso.setImagenUrl(request.imagenUrl());
+        if (request.imagenUrl() != null) {
+            curso.setImagenUrl(request.imagenUrl());
+        }
 
         Curso guardado = cursoRepository.save(curso);
 
@@ -150,6 +152,13 @@ public class CursoService {
 
         Curso curso = buscarCurso(id);
         curso.setPublicado(request.publicado());
+        return construirDetalle(cursoRepository.save(curso));
+    }
+
+    @Transactional
+    public CursoDetalleResponse actualizarImagen(Long id, String imagenUrl) {
+        Curso curso = buscarCurso(id);
+        curso.setImagenUrl(imagenUrl);
         return construirDetalle(cursoRepository.save(curso));
     }
 

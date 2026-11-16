@@ -30,6 +30,7 @@ public class SecurityConfig {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/imagenes/cursos/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/cursos/**", "/api/categorias/**")
                         .hasAnyRole("USER", "ADMIN")
                         .requestMatchers("/api/cursos/**", "/api/categorias/**").hasRole("ADMIN")

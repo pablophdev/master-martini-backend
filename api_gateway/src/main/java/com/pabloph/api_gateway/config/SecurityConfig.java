@@ -39,8 +39,9 @@ public class SecurityConfig {
                         .pathMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .pathMatchers("/actuator/health", "/actuator/info").permitAll()
                         .pathMatchers(HttpMethod.GET,
-                                "/api/v1/recipes/**",
-                                "/imagenes/recetas/**")
+                                 "/api/v1/recipes/**",
+                                 "/imagenes/recetas/**",
+                                 "/imagenes/cursos/**")
                         .permitAll()
                         .pathMatchers(HttpMethod.GET, "/api/cursos/**", "/api/categorias/**")
                         .hasAnyRole("USER", "ADMIN")
