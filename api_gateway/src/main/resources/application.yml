@@ -7,22 +7,22 @@ spring:
         webflux:
           routes:
             - id: ms-recetas
-              uri: ${MS_RECETAS_URL:http://localhost:8080}
+              uri: ${MS_RECETAS_URL:http://localhost:8090}
               predicates:
                 - Path=/api/v1/recipes/**,/api/v1/admin/recipes/**,/imagenes/recetas/**
 
             - id: ms-cursos
-              uri: ${MS_CURSOS_URL:http://localhost:8081}
+              uri: ${MS_CURSOS_URL:http://localhost:8091}
               predicates:
                 - Path=/api/cursos/**,/api/categorias/**
 
             - id: ms-contacto
-              uri: ${MS_CONTACTO_URL:http://localhost:8082}
+              uri: ${MS_CONTACTO_URL:http://localhost:8092}
               predicates:
                 - Path=/api/contacto/**,/api/consultas/**
 
             - id: ms-auth
-              uri: ${MS_AUTH_URL:http://localhost:8084}
+              uri: ${MS_AUTH_URL:http://localhost:8094}
               predicates:
                 - Path=/api/auth/**
 
