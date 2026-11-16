@@ -44,6 +44,11 @@ public class SecurityConfig {
                         .pathMatchers(HttpMethod.GET, "/api/cursos/**", "/api/categorias/**")
                         .hasAnyRole("USER", "ADMIN")
                         .pathMatchers(HttpMethod.POST, "/api/contacto/**").permitAll()
+                        .pathMatchers(
+                                HttpMethod.POST,
+                                "/api/auth/register",
+                                "/api/auth/login")
+                        .permitAll()
                         .pathMatchers("/api/v1/admin/**", "/api/consultas/**").hasRole("ADMIN")
                         .pathMatchers(
                                 HttpMethod.POST,
