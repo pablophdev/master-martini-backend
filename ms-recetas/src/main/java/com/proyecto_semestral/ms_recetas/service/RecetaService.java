@@ -64,7 +64,8 @@ public class RecetaService {
         }
 
         List<RecetaResumenResponse> recetas = listar(busqueda, categoriaId);
-        int desde = Math.min(pagina * TAMANO_PAGINA, recetas.size());
+        long desplazamiento = (long) pagina * TAMANO_PAGINA;
+        int desde = (int) Math.min(desplazamiento, recetas.size());
         int hasta = Math.min(desde + TAMANO_PAGINA, recetas.size());
 
         return new PageImpl<>(
