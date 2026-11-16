@@ -15,6 +15,7 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
 import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.security.oauth2.jwt.JwtValidators;
 import org.springframework.security.oauth2.jwt.NimbusReactiveJwtDecoder;
 import org.springframework.security.oauth2.jwt.ReactiveJwtDecoder;
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
@@ -78,15 +79,22 @@ public class SecurityConfig {
 
     @Bean
     ReactiveJwtDecoder jwtDecoder(@Value("${security.jwt.secret}") String secretBase64) {
-        byte[] secret = Base64.getDecoder().decode(secretBase64);
+        byte[] secret;
+        try {
+            secret = Base64.getDecoder().decode(secretBase64);
+        } catch (IllegalArgumentException exception) {
+            throw new IllegalStateException("JWT_SECRET debe estar codificado en Base64", exception);
+        }
         if (secret.length < 32) {
             throw new IllegalStateException("JWT_SECRET debe contener al menos 256 bits codificados en Base64");
         }
 
         SecretKey key = new SecretKeySpec(secret, "HmacSHA256");
-        return NimbusReactiveJwtDecoder.withSecretKey(key)
+        NimbusReactiveJwtDecoder decoder = NimbusReactiveJwtDecoder.withSecretKey(key)
                 .macAlgorithm(MacAlgorithm.HS256)
                 .build();
+        decoder.setJwtValidator(JwtValidators.createDefaultWithIssuer("ms-auth"));
+        return decoder;
     }
 
     @Bean

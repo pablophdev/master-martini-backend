@@ -13,16 +13,22 @@ import org.springframework.stereotype.Service;
 
 import com.proyecto_semestral.ms_auth.entity.Usuario;
 
-import lombok.RequiredArgsConstructor;
-
 @Service
-@RequiredArgsConstructor
 public class JwtService {
 
     private final JwtEncoder jwtEncoder;
+    private final long expirationSeconds;
 
-    @Value("${security.jwt.expiration-seconds}")
-    private long expirationSeconds;
+    public JwtService(
+            JwtEncoder jwtEncoder,
+            @Value("${security.jwt.expiration-seconds}") long expirationSeconds) {
+        if (expirationSeconds <= 0) {
+            throw new IllegalArgumentException(
+                    "security.jwt.expiration-seconds debe ser mayor que cero");
+        }
+        this.jwtEncoder = jwtEncoder;
+        this.expirationSeconds = expirationSeconds;
+    }
 
     public String generarToken(Usuario usuario) {
         Instant ahora = Instant.now();
