@@ -128,6 +128,13 @@ public class CursoService {
     }
 
     @Transactional(readOnly = true)
+    public List<CursoDetalleResponse> listarTodos() {
+        return cursoRepository.findAll().stream()
+                .map(this::construirDetalle)
+                .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
     public CursoDetalleResponse obtenerDetallePublicado(Long id) {
         Curso curso = cursoRepository.findByIdAndPublicadoTrue(id)
                 .orElseThrow(() -> new ResponseStatusException(

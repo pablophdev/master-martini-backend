@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.proyecto_semestral.ms_recetas.dto.request.ActualizarRecetaRequest;
 import com.proyecto_semestral.ms_recetas.dto.request.CrearRecetaRequest;
+import com.proyecto_semestral.ms_recetas.dto.response.CategoriaRecetaResponse;
 import com.proyecto_semestral.ms_recetas.dto.response.RecetaDetalleResponse;
 import com.proyecto_semestral.ms_recetas.dto.response.RecetaResumenResponse;
 import com.proyecto_semestral.ms_recetas.service.ImagenService;
@@ -47,6 +48,11 @@ public class RecetaController {
     @GetMapping("/recipes/{id}")
     public RecetaDetalleResponse obtenerPublicada(@PathVariable Long id) {
         return recetaService.obtenerPublicada(id);
+    }
+
+    @GetMapping("/recipes/categorias")
+    public List<CategoriaRecetaResponse> listarCategorias() {
+        return recetaService.listarCategorias();
     }
 
     @GetMapping("/admin/recipes")
