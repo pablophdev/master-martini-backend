@@ -16,6 +16,7 @@ public record RecetaDetalleResponse(
         String rendimientoTexto,
         String insumosTitulo,
         String insumosDescripcion,
+        Boolean publicada,
         List<IngredienteRecetaResponse> ingredientes,
         List<PasoPreparacionResponse> pasos) {
 }

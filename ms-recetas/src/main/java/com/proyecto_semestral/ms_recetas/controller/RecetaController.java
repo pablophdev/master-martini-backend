@@ -60,6 +60,11 @@ public class RecetaController {
         return recetaService.listarTodas();
     }
 
+    @GetMapping("/admin/recipes/{id}")
+    public RecetaDetalleResponse obtenerParaAdministrar(@PathVariable Long id) {
+        return recetaService.obtener(id);
+    }
+
     @PostMapping("/admin/recipes")
     public ResponseEntity<RecetaDetalleResponse> crear(
             @Valid @RequestBody CrearRecetaRequest request) {

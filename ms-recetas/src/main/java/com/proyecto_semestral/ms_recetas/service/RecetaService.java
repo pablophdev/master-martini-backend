@@ -308,6 +308,7 @@ public class RecetaService {
                 .rendimientoTexto(receta.getRendimientoTexto())
                 .insumosTitulo(receta.getInsumosTitulo())
                 .insumosDescripcion(receta.getInsumosDescripcion())
+                .publicada(receta.getPublicada())
                 .ingredientes(ingredientes)
                 .pasos(pasos)
                 .build();
