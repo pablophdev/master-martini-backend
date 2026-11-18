@@ -272,6 +272,7 @@ public class RecetaService {
                 .imagenUrl(receta.getImagenUrl())
                 .duracionTexto(receta.getDuracionTexto())
                 .categoria(toCategoriaResponse(categoria))
+                .publicada(receta.getPublicada())
                 .build();
     }
 

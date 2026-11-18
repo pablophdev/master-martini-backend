@@ -9,5 +9,6 @@ public record RecetaResumenResponse(
         String descripcion,
         String imagenUrl,
         String duracionTexto,
-        CategoriaRecetaResponse categoria) {
+        CategoriaRecetaResponse categoria,
+        Boolean publicada) {
 }

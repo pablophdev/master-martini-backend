@@ -32,7 +32,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/imagenes/cursos/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/cursos/**", "/api/categorias/**")
-                        .hasAnyRole("USER", "ADMIN")
+                        .permitAll()
                         .requestMatchers("/api/cursos/**", "/api/categorias/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/actuator/health").permitAll()
                         .anyRequest().authenticated())

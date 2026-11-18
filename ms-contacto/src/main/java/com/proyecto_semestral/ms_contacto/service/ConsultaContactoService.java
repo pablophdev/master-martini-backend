@@ -49,6 +49,13 @@ public class ConsultaContactoService {
     }
 
     @Transactional
+    public ConsultaResponse actualizarEstado(Long id, String estado) {
+        ConsultaContacto consulta = buscar(id);
+        consulta.setEstado(estado);
+        return toResponse(consultaRepository.save(consulta));
+    }
+
+    @Transactional
     public void eliminar(Long id) {
         consultaRepository.delete(buscar(id));
     }

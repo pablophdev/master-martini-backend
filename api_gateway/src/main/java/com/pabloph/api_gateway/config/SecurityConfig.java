@@ -40,11 +40,11 @@ public class SecurityConfig {
                         .pathMatchers("/actuator/health", "/actuator/info").permitAll()
                         .pathMatchers(HttpMethod.GET,
                                  "/api/v1/recipes/**",
+                                 "/api/cursos/**",
+                                 "/api/categorias/**",
                                  "/imagenes/recetas/**",
                                  "/imagenes/cursos/**")
                         .permitAll()
-                        .pathMatchers(HttpMethod.GET, "/api/cursos/**", "/api/categorias/**")
-                        .hasAnyRole("USER", "ADMIN")
                         .pathMatchers(HttpMethod.POST, "/api/contacto/**").permitAll()
                         .pathMatchers(
                                 HttpMethod.POST,
