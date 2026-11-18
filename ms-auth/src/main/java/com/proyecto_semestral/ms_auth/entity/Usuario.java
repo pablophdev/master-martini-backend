@@ -38,6 +38,18 @@ public class Usuario {
     @Column(nullable = false, unique = true, length = 254)
     private String email;
 
+    @Column(name = "nombre_negocio", length = 150)
+    private String nombreNegocio;
+
+    @Column(name = "tipo_negocio", length = 100)
+    private String tipoNegocio;
+
+    @Column(name = "tamano_negocio", length = 50)
+    private String tamanoNegocio;
+
+    @Column(name = "foto_perfil_url", length = 2048)
+    private String fotoPerfilUrl;
+
     @Column(nullable = false, length = 60)
     private String password;
 

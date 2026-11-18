@@ -43,7 +43,8 @@ public class SecurityConfig {
                                  "/api/cursos/**",
                                  "/api/categorias/**",
                                  "/imagenes/recetas/**",
-                                 "/imagenes/cursos/**")
+                                 "/imagenes/cursos/**",
+                                 "/imagenes/perfiles/**")
                         .permitAll()
                         .pathMatchers(HttpMethod.POST, "/api/contacto/**").permitAll()
                         .pathMatchers(

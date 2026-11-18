@@ -24,7 +24,7 @@ spring:
             - id: ms-auth
               uri: ${MS_AUTH_URL:http://localhost:8094}
               predicates:
-                - Path=/api/auth/**
+                - Path=/api/auth/**,/imagenes/perfiles/**
 
           globalcors:
             add-to-simple-url-handler-mapping: true

@@ -13,5 +13,10 @@ public record UsuarioResponse(
         String email,
         Rol rol,
         Boolean activo,
-        LocalDateTime creadoEn) {
+        String nombreNegocio,
+        String tipoNegocio,
+        String tamanoNegocio,
+        String fotoPerfilUrl,
+        LocalDateTime creadoEn,
+        LocalDateTime actualizadoEn) {
 }

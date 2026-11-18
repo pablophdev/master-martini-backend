@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.proyecto_semestral.ms_auth.dto.request.ActualizarPerfilRequest;
 import com.proyecto_semestral.ms_auth.dto.request.LoginRequest;
 import com.proyecto_semestral.ms_auth.dto.request.RegistroRequest;
 import com.proyecto_semestral.ms_auth.dto.response.AuthResponse;
@@ -39,6 +40,9 @@ public class AuthService {
                 .password(passwordEncoder.encode(request.password()))
                 .rol(Rol.USER)
                 .activo(true)
+                .nombreNegocio(limpiar(request.nombreNegocio()))
+                .tipoNegocio(limpiar(request.tipoNegocio()))
+                .tamanoNegocio(limpiar(request.tamanoNegocio()))
                 .build();
 
         return construirAuthResponse(usuarioRepository.save(usuario));
@@ -64,6 +68,25 @@ public class AuthService {
         return toResponse(usuario);
     }
 
+    @Transactional
+    public UsuarioResponse actualizarPerfil(String email, ActualizarPerfilRequest request) {
+        Usuario usuario = usuarioRepository.findByEmailIgnoreCase(normalizarEmail(email))
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario no encontrado"));
+        usuario.setNombre(request.nombre().trim());
+        usuario.setNombreNegocio(limpiar(request.nombreNegocio()));
+        usuario.setTipoNegocio(limpiar(request.tipoNegocio()));
+        usuario.setTamanoNegocio(limpiar(request.tamanoNegocio()));
+        return toResponse(usuarioRepository.saveAndFlush(usuario));
+    }
+
+    @Transactional
+    public UsuarioResponse actualizarFotoPerfil(String email, String fotoPerfilUrl) {
+        Usuario usuario = usuarioRepository.findByEmailIgnoreCase(normalizarEmail(email))
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario no encontrado"));
+        usuario.setFotoPerfilUrl(fotoPerfilUrl);
+        return toResponse(usuarioRepository.saveAndFlush(usuario));
+    }
+
     private AuthResponse construirAuthResponse(Usuario usuario) {
         return AuthResponse.builder()
                 .accessToken(jwtService.generarToken(usuario))
@@ -80,8 +103,21 @@ public class AuthService {
                 .email(usuario.getEmail())
                 .rol(usuario.getRol())
                 .activo(usuario.getActivo())
+                .nombreNegocio(usuario.getNombreNegocio())
+                .tipoNegocio(usuario.getTipoNegocio())
+                .tamanoNegocio(usuario.getTamanoNegocio())
+                .fotoPerfilUrl(usuario.getFotoPerfilUrl())
                 .creadoEn(usuario.getCreadoEn())
+                .actualizadoEn(usuario.getActualizadoEn())
                 .build();
+    }
+
+    private String limpiar(String valor) {
+        if (valor == null) {
+            return null;
+        }
+        String limpio = valor.trim();
+        return limpio.isEmpty() ? null : limpio;
     }
 
     private String normalizarEmail(String email) {
