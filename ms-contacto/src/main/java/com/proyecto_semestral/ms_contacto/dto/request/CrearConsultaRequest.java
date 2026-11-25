@@ -1,5 +1,7 @@
 package com.proyecto_semestral.ms_contacto.dto.request;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
@@ -9,11 +11,13 @@ import lombok.Builder;
 @Builder
 public record CrearConsultaRequest(
         @Positive(message = "El id del usuario debe ser mayor que cero")
+        @Schema(example = "1")
         Long usuarioId,
 
         @NotBlank(message = "El email es obligatorio")
         @Email(message = "El email debe tener un formato válido")
         @Size(max = 254, message = "El email no puede superar los 254 caracteres")
+        @Schema(example = "persona@example.com")
         String email,
 
         @Size(max = 30, message = "El teléfono no puede superar los 30 caracteres")
@@ -21,6 +25,7 @@ public record CrearConsultaRequest(
 
         @NotBlank(message = "El nombre del negocio es obligatorio")
         @Size(max = 150, message = "El nombre del negocio no puede superar los 150 caracteres")
+        @Schema(example = "Pastelería de ejemplo")
         String nombreNegocio,
 
         @Size(max = 100, message = "El tipo de negocio no puede superar los 100 caracteres")
@@ -31,5 +36,6 @@ public record CrearConsultaRequest(
 
         @NotBlank(message = "La descripción es obligatoria")
         @Size(max = 5000, message = "La descripción no puede superar los 5000 caracteres")
+        @Schema(example = "Descripción de ejemplo")
         String descripcion) {
 }

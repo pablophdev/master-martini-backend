@@ -1,5 +1,7 @@
 package com.proyecto_semestral.ms_cursos.dto.request;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import java.util.List;
 
 import jakarta.validation.Valid;
@@ -13,14 +15,17 @@ import lombok.Builder;
 public record CrearCursoRequest(
         @NotBlank(message = "El título del curso es obligatorio")
         @Size(max = 200, message = "El título del curso no puede superar los 200 caracteres")
+        @Schema(example = "Introducción a la pastelería")
         String titulo,
 
         @NotBlank(message = "La descripción del curso es obligatoria")
         @Size(max = 2000, message = "La descripción no puede superar los 2000 caracteres")
+        @Schema(example = "Descripción de ejemplo")
         String descripcion,
 
         @NotNull(message = "La categoría es obligatoria")
         @Positive(message = "El id de la categoría debe ser mayor que 0")
+        @Schema(example = "1")
         Long categoriaId,
 
         @Size(max = 2048, message = "La URL de la imagen no puede superar los 2048 caracteres")

@@ -1,5 +1,7 @@
 package com.proyecto_semestral.ms_recetas.dto.request;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
@@ -18,11 +20,13 @@ public class IngredienteRequest {
 
     @NotBlank(message = "El nombre del ingrediente es obligatorio")
     @Size(max = 150, message = "El nombre del ingrediente no puede superar los 150 caracteres")
+    @Schema(example = "Nombre de ejemplo")
     private String nombre;
 
     @Size(max = 100, message = "La cantidad no puede superar los 100 caracteres")
     private String cantidadTexto;
 
     @PositiveOrZero(message = "El orden no puede ser negativo")
+    @Schema(example = "1")
     private Integer orden;
 }

@@ -1,5 +1,7 @@
 package com.proyecto_semestral.ms_contacto.dto.request;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -12,5 +14,6 @@ public record ActualizarEstadoConsultaRequest(
         @Pattern(
                 regexp = "PENDIENTE|EN_PROCESO|ATENDIDA",
                 message = "El estado debe ser PENDIENTE, EN_PROCESO o ATENDIDA")
+        @Schema(example = "PENDIENTE", allowableValues = {"PENDIENTE", "EN_PROCESO", "ATENDIDA"})
         String estado) {
 }

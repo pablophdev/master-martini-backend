@@ -6,6 +6,34 @@ spring:
       server:
         webflux:
           routes:
+            - id: openapi-contacto
+              uri: ${MS_CONTACTO_URL:http://localhost:8092}
+              predicates:
+                - Path=/v3/api-docs/contacto
+              filters:
+                - SetPath=/v3/api-docs
+
+            - id: openapi-cursos
+              uri: ${MS_CURSOS_URL:http://localhost:8091}
+              predicates:
+                - Path=/v3/api-docs/cursos
+              filters:
+                - SetPath=/v3/api-docs
+
+            - id: openapi-recetas
+              uri: ${MS_RECETAS_URL:http://localhost:8090}
+              predicates:
+                - Path=/v3/api-docs/recetas
+              filters:
+                - SetPath=/v3/api-docs
+
+            - id: openapi-auth
+              uri: ${MS_AUTH_URL:http://localhost:8094}
+              predicates:
+                - Path=/v3/api-docs/auth
+              filters:
+                - SetPath=/v3/api-docs
+
             - id: ms-recetas
               uri: ${MS_RECETAS_URL:http://localhost:8090}
               predicates:
@@ -66,3 +94,18 @@ management:
   endpoint:
     gateway:
       access: read-only
+
+# Cada especificación usa el origen del gateway para ejecutar Try it out.
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    disable-swagger-default-url: true
+    urls:
+      - name: Autenticación y perfil
+        url: /v3/api-docs/auth
+      - name: Recetas
+        url: /v3/api-docs/recetas
+      - name: Cursos
+        url: /v3/api-docs/cursos
+      - name: Contacto
+        url: /v3/api-docs/contacto

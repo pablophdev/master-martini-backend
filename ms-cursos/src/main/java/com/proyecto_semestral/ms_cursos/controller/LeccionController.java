@@ -1,5 +1,13 @@
 package com.proyecto_semestral.ms_cursos.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 import java.net.URI;
 
 import org.springframework.http.ResponseEntity;
@@ -19,6 +27,7 @@ import com.proyecto_semestral.ms_cursos.service.LeccionService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
+@Tag(name = "Lecciones")
 @RestController
 @RequestMapping("/api/cursos/{cursoId}/lecciones")
 @RequiredArgsConstructor
@@ -26,6 +35,13 @@ public class LeccionController {
 
     private final LeccionService leccionService;
 
+    @Operation(summary = "Agregar una lección a un curso", description = "Requiere un JWT con rol ADMIN.")
+    @SecurityRequirement(name = "bearerAuth")
+    @ApiResponse(responseCode = "201", description = "Creado correctamente", useReturnTypeSchema = true)
+    @ApiResponse(responseCode = "400", description = "Solicitud o parámetros inválidos", content = @Content)
+    @ApiResponse(responseCode = "401", description = "Token ausente o inválido, o credenciales incorrectas", content = @Content)
+    @ApiResponse(responseCode = "403", description = "Permisos insuficientes", content = @Content)
+    @ApiResponse(responseCode = "409", description = "Conflicto con un registro existente", content = @Content)
     @PostMapping
     public ResponseEntity<LeccionResponse> crear(
             @PathVariable Long cursoId,
@@ -35,6 +51,14 @@ public class LeccionController {
         return ResponseEntity.created(ubicacion).body(leccion);
     }
 
+    @Operation(summary = "Actualizar una lección de un curso", description = "Requiere un JWT con rol ADMIN.")
+    @SecurityRequirement(name = "bearerAuth")
+    @ApiResponse(responseCode = "200", description = "Operación realizada correctamente", useReturnTypeSchema = true)
+    @ApiResponse(responseCode = "400", description = "Solicitud o parámetros inválidos", content = @Content)
+    @ApiResponse(responseCode = "401", description = "Token ausente o inválido, o credenciales incorrectas", content = @Content)
+    @ApiResponse(responseCode = "403", description = "Permisos insuficientes", content = @Content)
+    @ApiResponse(responseCode = "404", description = "Recurso no encontrado", content = @Content)
+    @ApiResponse(responseCode = "409", description = "Conflicto con un registro existente", content = @Content)
     @PutMapping("/{id}")
     public LeccionResponse actualizar(
             @PathVariable Long cursoId,
@@ -43,6 +67,13 @@ public class LeccionController {
         return leccionService.actualizar(cursoId, id, request);
     }
 
+    @Operation(summary = "Eliminar una lección de un curso", description = "Requiere un JWT con rol ADMIN.")
+    @SecurityRequirement(name = "bearerAuth")
+    @ApiResponse(responseCode = "204", description = "Eliminado correctamente", content = @Content)
+    @ApiResponse(responseCode = "400", description = "Solicitud o parámetros inválidos", content = @Content)
+    @ApiResponse(responseCode = "401", description = "Token ausente o inválido, o credenciales incorrectas", content = @Content)
+    @ApiResponse(responseCode = "403", description = "Permisos insuficientes", content = @Content)
+    @ApiResponse(responseCode = "404", description = "Recurso no encontrado", content = @Content)
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminar(
             @PathVariable Long cursoId,

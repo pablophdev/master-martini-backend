@@ -1,5 +1,7 @@
 package com.proyecto_semestral.ms_recetas.dto.request;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import java.util.List;
 
 import jakarta.validation.Valid;
@@ -22,16 +24,20 @@ public class ActualizarRecetaRequest {
 
     @NotBlank(message = "El título es obligatorio")
     @Size(max = 150, message = "El título no puede superar los 150 caracteres")
+    @Schema(example = "Introducción a la pastelería")
     private String titulo;
 
     @Size(max = 1000, message = "La descripción no puede superar los 1000 caracteres")
+    @Schema(example = "Descripción de ejemplo")
     private String descripcion;
 
     @NotNull(message = "La categoría es obligatoria")
     @Positive(message = "El id de la categoría debe ser mayor que 0")
+    @Schema(example = "1")
     private Long categoriaId;
 
     @Size(max = 500, message = "La URL del video no puede superar los 500 caracteres")
+    @Schema(example = "https://example.com/video")
     private String videoUrl;
 
     @Size(max = 500, message = "La URL de la imagen no puede superar los 500 caracteres")
@@ -49,6 +55,7 @@ public class ActualizarRecetaRequest {
     @Size(max = 2000, message = "La descripción de insumos no puede superar los 2000 caracteres")
     private String insumosDescripcion;
 
+    @Schema(example = "false")
     private Boolean publicada;
 
     @Valid
